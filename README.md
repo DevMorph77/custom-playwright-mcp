@@ -1,135 +1,153 @@
-<div align="center" markdown="1">
-  <table>
-    <tr>
-      <td align="center" valign="middle">
-        <a href="https://mseep.ai/app/executeautomation-mcp-playwright">
-          <img src="https://mseep.net/pr/executeautomation-mcp-playwright-badge.png" alt="MseeP.ai Security Assessment Badge" height="80"/>
-        </a>
-      </td>
-      <td align="center" valign="middle">
-        <a href="https://www.warp.dev/?utm_source=github&utm_medium=referral&utm_campaign=mcp-playwright">
-          <img alt="Warp sponsorship" width="200" src="https://github.com/user-attachments/assets/ab8dd143-b0fd-4904-bdc5-dd7ecac94eae"/>
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td align="center"><sub>MseeP.ai Security Assessment</sub></td>
-      <td align="center"><sub>Special thanks to <a href="https://www.warp.dev/?utm_source=github&utm_medium=referral&utm_campaign=mcp-playwright">Warp, the AI terminal for developers</a></sub></td>
-    </tr>
-  </table>
-</div>
-<hr>
+# playwright-mcp-server-custom
 
-# Playwright MCP Server 🎭
+A Model Context Protocol (MCP) server that brings Playwright browser automation to LLMs, agents, and automation frameworks.  
+Interact with real browsers, inject cookies/localStorage, take screenshots, generate code, scrape web pages, and more—all via a unified tool interface.
 
-[![smithery badge](https://smithery.ai/badge/@executeautomation/playwright-mcp-server)](https://smithery.ai/server/@executeautomation/playwright-mcp-server)
+---
 
-A Model Context Protocol server that provides browser automation capabilities using Playwright. This server enables LLMs to interact with web pages, take screenshots, generate test code, web scraps the page and execute JavaScript in a real browser environment.
+## 🚀 Features
 
-<a href="https://glama.ai/mcp/servers/yh4lgtwgbe"><img width="380" height="200" src="https://glama.ai/mcp/servers/yh4lgtwgbe/badge" alt="mcp-playwright MCP server" /></a>
+- **Full Playwright Automation**: Chromium, Firefox, and WebKit support.
+- **Session Injection**: Set cookies and localStorage before navigation (simulate logged-in or pre-configured sessions).
+- **Web Interaction**: Click, fill, select, hover, upload files, drag, and more.
+- **Navigation & Tabs**: Open URLs, switch tabs, go back/forward, set user agent, headless mode, etc.
+- **Screenshots & Output**: Capture screenshots, save as PDF, extract visible text/HTML.
+- **API Testing**: Perform HTTP GET/POST/PUT/PATCH/DELETE requests.
+- **Console & JS**: Retrieve browser console logs, execute JavaScript.
+- **Code Generation**: Record and generate Playwright test scripts.
+- **Resource Access**: Download screenshots, logs, and more.
 
-## Screenshot
-![Playwright + Claude](image/playwright_claude.png)
+---
 
-## [Documentation](https://executeautomation.github.io/mcp-playwright/) | [API reference](https://executeautomation.github.io/mcp-playwright/docs/playwright-web/Supported-Tools)
-
-## Installation
-
-You can install the package using either npm, mcp-get, or Smithery:
-
-Using npm:
-```bash
-npm install -g @executeautomation/playwright-mcp-server
-```
-
-Using mcp-get:
-```bash
-npx @michaellatman/mcp-get@latest install @executeautomation/playwright-mcp-server
-```
-Using Smithery
-
-To install Playwright MCP for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@executeautomation/playwright-mcp-server):
+## 📦 Installation
 
 ```bash
-npx @smithery/cli install @executeautomation/playwright-mcp-server --client claude
+npm install -g playwright-mcp-server-custom
 ```
-#### Installation in VS Code
-
-Install the Playwright MCP server in VS Code using one of these buttons:
-
-<!--
-// Generate using?:
-const config = JSON.stringify({ name: 'playwright', command: 'npx', args: ["-y", "@executeautomation/playwright-mcp-server"] });
-const urlForWebsites = `vscode:mcp/install?${encodeURIComponent(config)}`;
-// Github markdown does not allow linking to `vscode:` directly, so you can use our redirect:
-const urlForGithub = `https://insiders.vscode.dev/redirect?url=${encodeURIComponent(urlForWebsites)}`;
--->
-
-[<img src="https://img.shields.io/badge/VS_Code-VS_Code?style=flat-square&label=Install%20Server&color=0098FF" alt="Install in VS Code">](https://insiders.vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%257B%2522name%2522%253A%2522playwright%2522%252C%2522command%2522%253A%2522npx%2522%252C%2522args%2522%253A%255B%2522-y%2522%252C%2522%2540executeautomation%252Fplaywright-mcp-server%2522%255D%257D) 
-[<img alt="Install in VS Code Insiders" src="https://img.shields.io/badge/VS_Code_Insiders-VS_Code_Insiders?style=flat-square&label=Install%20Server&color=24bfa5">](https://insiders.vscode.dev/redirect?url=vscode-insiders%3Amcp%2Finstall%3F%257B%2522name%2522%253A%2522playwright%2522%252C%2522command%2522%253A%2522npx%2522%252C%2522args%2522%253A%255B%2522-y%2522%252C%2522%2540executeautomation%252Fplaywright-mcp-server%2522%255D%257D)
-
-Alternatively, you can install the Playwright MCP server using the VS Code CLI:
-
+Or use with `npx`:
 ```bash
-# For VS Code
-code --add-mcp '{"name":"playwright","command":"npx","args":["@executeautomation/playwright-mcp-server"]}'
+npx playwright-mcp-server-custom
 ```
 
+---
+
+## 🖥️ Usage
+
+Start the MCP server:
 ```bash
-# For VS Code Insiders
-code-insiders --add-mcp '{"name":"playwright","command":"npx","args":["@executeautomation/playwright-mcp-server"]}'
+playwright-mcp-server
+```
+or
+```bash
+npx playwright-mcp-server-custom
 ```
 
-After installation, the ExecuteAutomation Playwright MCP server will be available for use with your GitHub Copilot agent in VS Code.
+The server will listen for MCP tool requests via stdio (for integration with LLM agents, automation clients, or your own scripts).
 
-## Configuration to use Playwright Server
-Here's the Claude Desktop configuration to use the Playwright server:
+---
 
+## 🛠️ Example Tool Calls
+
+### 1. **Set Session Data (Cookies & localStorage)**
 ```json
 {
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["-y", "@executeautomation/playwright-mcp-server"]
+  "cookies": [
+    {
+      "domain": ".example.com",
+      "name": "sessionid",
+      "value": "abc123",
+      "path": "/",
+      "expirationDate": 9999999999,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
     }
-  }
+  ],
+  "origins": [
+    {
+      "origin": "https://example.com",
+      "localStorage": [
+        { "name": "user", "value": "{\"id\":1,\"name\":\"Alice\"}" }
+      ]
+    }
+  ]
 }
 ```
+Tool name: `playwright_set_session_data`
 
-## Testing
+---
 
-This project uses Jest for testing. The tests are located in the `src/__tests__` directory.
+### 2. **Navigate to a Website**
+```json
+{
+  "url": "https://www.hubtel.com"
+}
+```
+Tool name: `playwright_navigate`
 
-### Running Tests
+---
 
-You can run the tests using one of the following commands:
+### 3. **Take a Screenshot**
+```json
+{
+  "name": "homepage",
+  "fullPage": true
+}
+```
+Tool name: `playwright_screenshot`
 
+---
+
+## 🧩 Supported Tools
+
+- `playwright_set_session_data` — Set cookies and localStorage before navigation
+- `playwright_navigate` — Open a URL
+- `playwright_click`, `playwright_fill`, `playwright_select`, `playwright_hover`, `playwright_upload_file`, `playwright_drag`, `playwright_press_key`
+- `playwright_screenshot`, `playwright_save_as_pdf`
+- `playwright_get`, `playwright_post`, `playwright_put`, `playwright_patch`, `playwright_delete`
+- `playwright_console_logs`, `playwright_evaluate`
+- `playwright_start_codegen_session`, `playwright_end_codegen_session`, etc.
+- ...and more!
+
+See the [Supported Tools documentation](docs/docs/playwright-web/Supported-Tools.mdx) for full details.
+
+---
+
+## 🧪 Testing
+
+This project uses Jest for testing.  
+Run all tests:
 ```bash
-# Run tests using the custom script (with coverage)
-node run-tests.cjs
-
-# Run tests using npm scripts
-npm test           # Run tests without coverage
-npm run test:coverage  # Run tests with coverage
-npm run test:custom    # Run tests with custom script (same as node run-tests.cjs)
+npm test
+```
+With coverage:
+```bash
+npm run test:coverage
 ```
 
-The test coverage report will be generated in the `coverage` directory.
+---
 
-### Running evals
+## 🤝 Contributing
 
-The evals package loads an mcp client that then runs the index.ts file, so there is no need to rebuild between tests. You can load environment variables by prefixing the npx command. Full documentation can be found [here](https://www.mcpevals.io/docs).
+- Fork the repo and create a feature branch.
+- Add new tools by implementing the `ToolHandler` interface and registering your tool in `src/tools.ts` and `src/toolHandler.ts`.
+- Keep tool names short (for compatibility with LLM clients).
+- Submit a pull request!
 
-```bash
-OPENAI_API_KEY=your-key  npx mcp-eval src/evals/evals.ts src/tools/codegen/index.ts
-```
+---
 
-## Contributing
+## 📄 License
 
-When adding new tools, please be mindful of the tool name length. Some clients, like Cursor, have a 60-character limit for the combined server and tool name (`server_name:tool_name`).
+MIT License  
+Copyright (c) 2025 DevMorph
 
-Our server name is `playwright-mcp`. Please ensure your tool names are short enough to not exceed this limit.
+---
 
-## Star History
+## 💡 Credits
 
-[![Star History Chart](https://api.star-history.com/svg?repos=executeautomation/mcp-playwright&type=Date)](https://star-history.com/#executeautomation/mcp-playwright&Date)
+Originally inspired by [ExecuteAutomation's Playwright MCP Server](https://github.com/executeautomation/mcp-playwright).  
+Maintained by DevMorph.
+
+---
+
+**Happy automating!**
